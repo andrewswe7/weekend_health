@@ -1,0 +1,16 @@
+{
+  "name": "weekend_health",
+  "version": "1.0.0",
+  "description": "Weekend Health Take Home Challenge",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "test": "ts-node test.ts"
+  },
+  "author": "Andrew Swe",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}
