@@ -5,41 +5,35 @@
 /* 
     Function to build hashes for any given string
     1. We know all letters are lowercase so only 26 possible characters
-    2. We create an array to represent each character count
-    3. The index is the ASCII value of the character starting at 0
+    2. We create an object keep track of the count of each character in the string
+    3. Returns "Invalid Input" if the character is not an alphabetical lowercase character
 */
-const buildHash = (s : string): number[] => {
-    const hash : number[] = new Array(26).fill(0);
+const buildHash = (s : string): Object => {
+    const counts: Object = {};
 
     for(let c of s) {
-        // Get the ASCII value of the character 
-        // from 0 to 25
         const code: number = c.charCodeAt(0) - 97;
-
         // We can also validate inputs here to be sure that we are only working with lowercase alphabetical letters
-        // 
         if(code < 0 || code > 25) throw 'Invalid Input'
-        hash[code]++;
+        counts[c] = counts[c] || 0;
+        counts[c]++;
     }
-
-    return hash;
+    return counts;
 };
 
 
 /*
     Function to check if permutation is valid
-    1. Iterates through the 26 possible characters (indices)
-    2. Compares counts of both strings at each index
+    1. Iterates each character of the word string to compare to the input string
+    2. Compares counts of both strings of each character
     3. If the word contains more counts of a letter, we know this can't be a permutation
     4. Successful completion of the loop returns true
 */
-const validPermutation = (hash1: number[], hash2: number[]): boolean => {
-    const len = 26;
+const validPermutation = (chars1: number[], chars2: number[]): boolean => {
+    const chars = Object.keys(chars2);
 
-    for(let i = 0; i < len; i++) {
-        if(hash1[i] < hash2[i]) {
-            return false;
-        }
+    for(let c of chars) {
+        if(!chars1[c] || chars1[c] < chars2[c]) return false;
     }
     return true;
 };
@@ -47,30 +41,30 @@ const validPermutation = (hash1: number[], hash2: number[]): boolean => {
 
 /*
     Main Function
-    1. Creates hash of the input string
-    2. Iterates through the input dictionary
-    3. Creates hash of each word from the dictionary
-    4. Compares the hashes of each word
+    1. Gets the counts of characters of the input string
+    2. Iterates through the input dictionary words
+    3. Creates counts for each character of each word from the dictionary
+    4. Compares the counts of each character in each word
 */
 const findWords = (inputString: string, dictionary : string[]): string[] | Error  => {
     const results: string[] = [];
-    let inputHash;
+    let inputCharacterCounts;
     try {
-        inputHash = buildHash(inputString);
+        inputCharacterCounts = buildHash(inputString);
     } catch(error){
         return error;
     }
 
     for(let word of dictionary) {
-        let wordHash;
+        let wordCharacterCount;
 
         try {
-            wordHash = buildHash(word);
+            wordCharacterCount = buildHash(word);
         } catch(error) {
             return error;
         }
 
-        if(validPermutation(inputHash, wordHash)) results.push(word);
+        if(validPermutation(inputCharacterCounts, wordCharacterCount)) results.push(word);
     }
 
     return results;
