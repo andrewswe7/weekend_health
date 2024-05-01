@@ -27,4 +27,13 @@
 
   O(n) = k + mn where both k and n is 26, so O(n) = m.
 
+### Running the function
+  To run the project, use the follow commands below.
+  
+    npm i  
+    npm start
+
+  More test cases can be added to the TEST_CASES array. 
+    
+
   
